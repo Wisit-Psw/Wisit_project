@@ -1,0 +1,17 @@
+
+
+.footer-container {
+  width: 100%;
+  height: 50px;
+  padding: 1rem;
+  background-color: #333;
+  color: White;
+  /* margin-top: 1%; */
+  position: fixed; 
+  bottom: 0;
+
+}
+.Dropdownbtn {
+  color: White;
+  /* margin-left: -100%; */
+}
