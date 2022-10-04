@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{Component} from 'react'
 import {Navbar,Container ,Nav,Dropdown  } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
@@ -12,7 +12,8 @@ const divStyle ={
     display: 'flex',
     alignItems: 'center'
 };
-export const NavBar = () =>{
+class NavBar extends Component{
+    render() {
   return (
     <Navbar bg="dark"  sticky="top" expand="md">
         <Container>
@@ -46,7 +47,6 @@ export const NavBar = () =>{
                         <Nav.Link as={Link} to="/CramersRules">Cramers Rules</Nav.Link>
                         <Nav.Link as={Link} to="/GaussElm">Gauss Elimination</Nav.Link>
                         <Nav.Link as={Link} to="/Matrixinvertion">Matrixinvertion</Nav.Link>
-                        <Nav.Link as={Link} to="/Choleskydecome">Cholesky decomposition</Nav.Link>
                         <Nav.Link as={Link} to="/Jacobi">Jacobi Iteration</Nav.Link>
                         <Nav.Link as={Link} to="/GaussSeidel">Gauss Seidel</Nav.Link>
                         <Nav.Link as={Link} to="/Conjugate">Conjugate Gradient</Nav.Link>
@@ -59,5 +59,6 @@ export const NavBar = () =>{
             
         </Container>
     </Navbar>
-  )
+  );}
 }
+export default NavBar;

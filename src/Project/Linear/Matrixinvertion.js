@@ -109,12 +109,12 @@ class Matrixinvertion extends Component{
             var multivar = matrix[j][i];
             if(i+1<=matrix.length){
                 for(let k=0; k<matrix.length; k++){
-                  retmet += "<td style='width:180px;'>"+Math.floor(matrix[j][k]*1000)/1000+'-(('+Math.floor(matrix[i][k]*1000)/1000+'/'+Math.floor(matrix[i][i]*1000)/1000+')*'+Math.floor(multivar*1000)/1000+')'+"</td>";
+                  retmet += "<td style='width:180px;'>"+Math.floor(matrix[j][k]*1000)/1000+'-(('+Math.floor(matrix[i][k]*1000)/1000+'/'+Math.floor(matrix[i][i]*1000)/1000+')*'+Math.floor(multivar*1000)/1000+')</td>';
                     var x = (matrix[j][k]-((matrix[i][k]/matrix[i][i])*multivar));
                     matrix[j][k] = x;
                 }
                 for(let k=0; k<matrix.length; k++){                    
-                  retmet += "<td style='width:180px;'>"+Math.floor(Invertmat[j][k]*1000)/1000+'-(('+Math.floor(Invertmat[i][k]*1000)/1000+'/'+Math.floor(matrix[i][i]*1000)/1000+')*'+Math.floor(multivar*1000)/1000+')'+"</td>";
+                  retmet += "<td style='width:180px;'>"+Math.floor(Invertmat[j][k]*1000)/1000+'-(('+Math.floor(Invertmat[i][k]*1000)/1000+'/'+Math.floor(matrix[i][i]*1000)/1000+')*'+Math.floor(multivar*1000)/1000+')</td>';
                     var y = (Invertmat[j][k]-((Invertmat[i][k]/matrix[i][i])*multivar));
                     Invertmat[j][k] = y;
                 }
