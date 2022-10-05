@@ -1,13 +1,16 @@
+"use strict";
+
 //6404062610367 วิสิฐ พูลสวัสดิ์
-var xm=0.1;
+var xm = 0.1;
+
 function calR(x) {
-  var fx = ((1/2)*x)**(1/2);
+  var fx = Math.pow(1 / 2 * x, 1 / 2);
   return fx;
 }
 
-
 xm = calR(xm);
 var xo;
+
 do {
   xo = xm;
   xm = calR(xm);

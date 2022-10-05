@@ -8,7 +8,7 @@ var Xm = [];
 var Xl = [];
 var Xr = [];
 var Xloop = [];
-class Bisection extends Component {
+class FalsePosition extends Component {
   constructor() {
     super();
     console.log("constructor");
@@ -17,32 +17,39 @@ class Bisection extends Component {
   componentDidMount() {
     console.log("componentDidMount");
   }
+  
   myFunc() {
+    var cal = (x) =>{
+        fx = eval(document.getElementById("Fx").value);
+        // var fx = 43*x-1;
+        return fx;
+      }
     const showchart = ReactDOM.createRoot(document.getElementById("showchart"));
-    var inputnum = document.getElementById("number").value;
-    var inputroot = document.getElementById("rootofnumber").value;
-    if (inputnum !== "" && inputroot !== "") {
+    var xl = document.getElementById("Xl").value;
+    var xr = document.getElementById("Xr").value;
+    var fx = document.getElementById("Fx").value;
+    if (xl !== "" && xr !== ""&& fx !== "") {
       var retsol = "<div class='scollbar'><table >";
       var trloop = "<tr ><th style='border:1px solid black;'>Loop</th>";
       var trXl = "<tr ></tr><th style='border:1px solid black;'>Xl</th>";
       var trXr = "<tr ></tr><th style='border:1px solid black;'>Xr</th>";
       var trXm = "<tr ></tr><th style='border:1px solid black;'>Xm</th>";
       var trCheck = "<tr ></tr><th style='border:1px solid black;'>Check</th>";
+      var trError = "<tr ></tr><th style='border:1px solid black;'>Error</th>";
       var trSet =
         "<tr ></tr><th style='border:1px solid black;'>Set new X</th>";
       var retans = "";
-      const Rootof = inputnum;
-      const root = inputroot;
-      var xl = 0;
-      var xr = Rootof;
-      var xm = (xl + xr) / 2;
+      var xm=0;
+      var xo;
       var countloop = 0;
-      while (Math.abs(Math.pow(xm, root) - Rootof) >= 0.000001) {
+      
+      do{
+        xo = xm;
+        xm = ((xl * cal(xr)) - (xr * cal(xl))) / (cal(xr) - cal(xl));
         Xm.push(xm);
         Xl.push(xl);
         Xr.push(xr);
         Xloop.push(countloop);
-        xm = (xl + xr) / 2;
         // retsol += "<tr style='border:1px solid black;'>";
         trloop +=
           "<td style='border:1px solid black;'>" + ++countloop + "</td>";
@@ -58,36 +65,39 @@ class Bisection extends Component {
           "<td style='border:1px solid black;'>" +
           Math.floor(xm * 100000) / 100000 +
           "</td>";
-        if (Math.pow(xm, root) - Rootof > 0) {
+        var fxn = cal(xm)*cal(xr);
+        if (fxn > 0) {
           xr = xm;
           trCheck +=
             "<td style='border:1px solid black;'>" +
-            Math.floor(Math.pow(xm, root) * 1000) / 1000 +
-            "-" +
-            Rootof +
+            (fxn ) +
             ">0</td>";
           trSet += "<td style='border:1px solid black;'>xr=xm</td>";
         } else {
           xl = xm;
           trCheck +=
             "<td style='border:1px solid black;'>" +
-            Math.floor(Math.pow(xm, root) * 1000) / 1000 +
-            "-" +
-            Rootof +
+            fxn +
             "<0</td>";
           trSet += "<td style='border:1px solid black;'>xl=xm</td>";
         }
+        trError +=
+          "<td style='border:1px solid black;'>" +
+          Math.floor((Math.abs((xm - xo) / xm) * 100) * 1000) / 1000 +
+          "%</td>";
         // retsol += "</tr>";
-      }
+        // xm = ((xl * cal(xr)) - (xr * cal(xl))) / (cal(xr) - cal(xl));
+      }while (Math.abs((xm - xo) / xm * 100) > 0.000001);
       trloop += "</tr>";
       trXl += "</tr>";
       trXr += "</tr>";
       trXm += "</tr>";
       trCheck += "</tr>";
+      trError += "</tr>";
       trSet += "</tr>";
       retsol +=
-        trloop + trXl + trXr + trXm + trCheck + trSet + "</table ></div>";
-      retans += "root " + root + " of " + Rootof + " = " + xm;
+        trloop + trXl + trXr + trXm + trCheck + trSet + trError+"</table ></div>";
+      retans += "Answer is  " + xm;
       document.getElementById("showsolt").innerHTML = retsol;
       document.getElementById("showans").innerHTML = retans;
       showchart.render(
@@ -118,7 +128,7 @@ class Bisection extends Component {
               <fieldset>
                 <Form.Group className="mb-3">
                   <Form.Label htmlFor="disabledTextInput">
-                    Bisection Method
+                    False Position Method
                   </Form.Label>
                   <div
                     style={{
@@ -128,20 +138,27 @@ class Bisection extends Component {
                     }}
                   >
                     <Form.Control
-                      id="number"
+                      id="Xl"
                       type="number"
                       step="1"
-                      placeholder="Number"
+                      placeholder="Input Xl"
                       style={formstyle}
                     />
                     <Form.Control
-                      id="rootofnumber"
+                      id="Xr"
                       type="number"
                       step="1"
-                      placeholder="Root of number"
+                      placeholder="Input Xr"
                       style={formstyle}
                     />
                   </div>
+                  <Form.Control
+                      id="Fx"
+                      type="text"
+                      step="1"
+                      placeholder="Input f(x)"
+                      style={formstyle}
+                    />
                 </Form.Group>
                 <div id="showans" className="ansStyles"></div>
                 <button
@@ -168,4 +185,4 @@ class Bisection extends Component {
   }
 }
 
-export default Bisection;
+export default FalsePosition;
