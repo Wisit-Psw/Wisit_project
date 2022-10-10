@@ -8,6 +8,7 @@ var x = [];
 var Xl ;
 var Xr ;
 var Xloop = [];
+/* eslint no-eval: 0 */
 class Onepoint extends Component {
   constructor() {
     super();
@@ -129,7 +130,7 @@ class Onepoint extends Component {
             </Form>
           </div>
           <div>
-            <div id="showsolt" class="tablestyle" style={{ marginTop:"5%"}}>
+            <div id="showsolt" style={{ marginTop:"5%"}}>
               <table class="tablestyle"></table>
             </div>
           </div>

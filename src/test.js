@@ -1,4 +1,10 @@
-var x=0;
-var stringequa ="((1/2)*x)**(1/2)" 
+import * as React from "react";
 
-console.log(eval(stringequa));
+import { MathComponent } from "mathjax-react";
+
+class MJAX extends React.Component {
+  render() {
+    return <MathComponent tex={'root(5-((5/5)*5)^5)'} />;
+  }
+}
+export default MJAX;

@@ -53,6 +53,24 @@ class NavBar extends Component{
                         
                 </Dropdown.Menu>
             </Dropdown>
+            <Dropdown className="Dropdownbtn">
+                <Dropdown.Toggle variant="dark" id="dropdown-basic">
+                    Interporation
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                        <Nav.Link as={Link} to="/Newton_Div">Newton Divided</Nav.Link>
+                        <Nav.Link as={Link} to="/Lagrange">Lagrange Interporation</Nav.Link>
+                        
+                </Dropdown.Menu>
+            </Dropdown>
+            <Dropdown className="Dropdownbtn">
+                <Dropdown.Toggle variant="dark" id="dropdown-basic">
+                    Extraporation
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                        
+                </Dropdown.Menu>
+            </Dropdown>
                 </Nav>
             </Navbar.Collapse>
             

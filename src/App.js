@@ -12,6 +12,8 @@ import Newtonraphson from "./Project/rootofequation/Newtonraphson";
 import { BrowserRouter,Routes ,Route} from "react-router-dom";
 import NavBar from './Navbar'
 import Footer from './Footer'
+import MJAX from './test'
+
 import './App.css';
 
 class App extends Component {
@@ -34,6 +36,7 @@ class App extends Component {
             <Route path="/GaussElm" element={<GaussElm />}/>
             <Route path="/Matrixinvertion" element={<Matrixinvertion />}/>
             <Route path="/Jacobi" element={<Jacobi />}/>
+            <Route path="/test" element={<MJAX />}/>
 
           </Routes>
           <Footer/>
