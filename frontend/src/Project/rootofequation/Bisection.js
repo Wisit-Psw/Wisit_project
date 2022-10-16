@@ -4,18 +4,29 @@ import * as ReactDOM from "react-dom";
 import "./rootof.css";
 import ApexChart from "./chart";
 var formstyle = { marginLeft: "auto", marginRight: "auto" };
-var Xm = [];
-var Xl = [];
-var Xr = [];
-var Xloop = [];
+var data ={
+  Xm : [],
+  Xloop : [],
+  receivedata :{
+    number:'',
+    root:''
+  }
+}
+
+export function Bisrection_receivedata(pdata){
+  data.receivedata = pdata;
+}
 class Bisection extends Component {
-  constructor() {
-    super();
-    console.log("constructor");
+  constructor(props) {
+    super(props);
+    console.log(props.data);
+    
   }
 
   componentDidMount() {
     console.log("componentDidMount");
+    data.receivedata.number = '';
+    data.receivedata.root = '';
   }
   myFunc() {
     const showchart = ReactDOM.createRoot(document.getElementById("showchart"));
@@ -24,10 +35,10 @@ class Bisection extends Component {
     if (inputnum !== "" && inputroot !== "") {
       var retsol = "<div class='scollbar'><table >";
       var trloop = "<tr ><th style='border:1px solid black;'>Loop</th>";
-      var trXl = "<tr ></tr><th style='border:1px solid black;'>Xl</th>";
-      var trXr = "<tr ></tr><th style='border:1px solid black;'>Xr</th>";
-      var trXm = "<tr ></tr><th style='border:1px solid black;'>Xm</th>";
-      var trCheck = "<tr ></tr><th style='border:1px solid black;'>Check</th>";
+      var trXl = "<tr ><th style='border:1px solid black;'>Xl</th>";
+      var trXr = "<tr ><th style='border:1px solid black;'>Xr</th>";
+      var trXm = "<tr ><th style='border:1px solid black;'>Xm</th>";
+      var trCheck = "<tr ><th style='border:1px solid black;'>Check</th>";
       var trSet =
         "<tr ></tr><th style='border:1px solid black;'>Set new X</th>";
       var retans = "";
@@ -38,10 +49,8 @@ class Bisection extends Component {
       var xm = (xl + xr) / 2;
       var countloop = 0;
       while (Math.abs(Math.pow(xm, root) - Rootof) >= 0.000001) {
-        Xm.push(xm);
-        Xl.push(xl);
-        Xr.push(xr);
-        Xloop.push(countloop);
+        data.Xm.push(xm);
+        data.Xloop.push(countloop);
         xm = (xl + xr) / 2;
         // retsol += "<tr style='border:1px solid black;'>";
         trloop +=
@@ -92,14 +101,14 @@ class Bisection extends Component {
       document.getElementById("showans").innerHTML = retans;
       showchart.render(
         <div>
-          <ApexChart props={[Xm, Xl, Xr, Xloop]} />
+          <ApexChart props={[data.Xm, data.Xloop]} />
         </div>
       );
       // document.getElementById("chart").innerHTML = "";
-      Xm = [];
-      Xl = [];
-      Xr = [];
-      Xloop = [];
+      data.Xm = [];
+      data.Xl = [];
+      data.Xr = [];
+      data.Xloop = [];
     } else {
       document.getElementById("showans").innerHTML = "";
       document.getElementById("showsolt").innerHTML =
@@ -111,7 +120,6 @@ class Bisection extends Component {
     console.log("render");
     return (
       <div className="boxStyles">
-        {/* <div className="boxStyles2"> */}
         <div style={{ display: "flex", marginTop: "20px", height: "40%" }}>
           <div className="InputStyles">
             <Form style={{ padding: "20px" }}>
@@ -131,6 +139,7 @@ class Bisection extends Component {
                       id="number"
                       type="number"
                       step="1"
+                      defaultValue={data.receivedata.number}
                       placeholder="Number"
                       style={formstyle}
                     />
@@ -138,6 +147,7 @@ class Bisection extends Component {
                       id="rootofnumber"
                       type="number"
                       step="1"
+                      defaultValue={data.receivedata.root}
                       placeholder="Root of number"
                       style={formstyle}
                     />
@@ -161,7 +171,7 @@ class Bisection extends Component {
           </div>
         </div>
         <div id="showchart">
-          <ApexChart props={[Xm, Xl, Xr, Xloop]} />
+          <ApexChart props={[data.Xm,  data.Xloop]} />
         </div>
       </div>
     );

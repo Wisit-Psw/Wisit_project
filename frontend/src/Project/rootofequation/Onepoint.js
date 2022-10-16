@@ -4,11 +4,19 @@ import * as ReactDOM from "react-dom";
 import "./rootof.css";
 import ApexChart from "./chart";
 var formstyle = { marginLeft: "auto", marginRight: "auto" };
-var x = [];
-var Xl;
-var Xr;
-var Xloop = [];
-class Newtonraphson extends Component {
+var data ={
+  Xm : [],
+  Xloop : [],
+  receivedata :{
+    X:'',
+    Fx:''
+  }
+}
+export function Onepoint_receivedata(pdata){
+  data.receivedata=pdata
+  console.log(data.receivedata);
+}
+class Onepoint extends Component {
   constructor() {
     super();
     console.log("constructor");
@@ -16,22 +24,25 @@ class Newtonraphson extends Component {
 
   componentDidMount() {
     console.log("componentDidMount");
+    data.receivedata.X = '';
+    data.receivedata.Fx = '';
   }
-
+  
   myFunc() {
-    var Funcx = (x) => {
-      var fx = eval(document.getElementById("Fx").value);
-      // var fx = 43*x-1;
-      return fx;
-    };
-    var DFuncx = (x) => {
-      var fx = eval(document.getElementById("DFx").value);
-      // var fx = 43*x-1;
-      return fx;
-    };
+    var cal = (x) =>{
+      var strval = document.getElementById("Fx").value;
+      var str =''
+      for(var i=0; i<strval.length; i++) {
+        if(strval[i] !== '^'){str+=strval[i];}
+        else{str+='**';}
+      }
+        fx = eval(str);
+        // var fx = 43*x-1;
+        return fx;
+      }
     const showchart = ReactDOM.createRoot(document.getElementById("showchart"));
-    var fx = eval(document.getElementById("Fx").value);
-    var xm = document.getElementById("X").value;
+        var fx = document.getElementById("Fx").value;
+        var xm = document.getElementById("X").value;
     if (xm !== "" && fx !== "") {
       var retsol = "<div class='scollbar'><table >";
       var trloop = "<tr ><th style='border:1px solid black;'>Loop</th>";
@@ -40,43 +51,42 @@ class Newtonraphson extends Component {
       var retans = "";
       var xo;
       var countloop = 0;
-      do {
+      do{
         xo = xm;
-        x.push(xm);
-        xm = xm - Funcx(xm) / DFuncx(xm);
+        data.Xm.push(xm);
+        xm = cal(xm);
         console.log(xm);
-        Xloop.push(countloop);
+        data.Xloop.push(countloop);
         // retsol += "<tr style='border:1px solid black;'>";
         trloop +=
           "<td style='border:1px solid black;'>" + ++countloop + "</td>";
         trx +=
           "<td style='border:1px solid black;'>" +
-          Math.floor(xm * 100000) / 100000 +
+          Math.floor(xm * 100) / 100 +
           "</td>";
         trError +=
           "<td style='border:1px solid black;'>" +
-          Math.floor((((xm - xo) / xm) * 100) * 1000)/1000 +
+          Math.floor((Math.abs((xm - xo) / xm) * 100) * 100) / 100 +
           "%</td>";
         // retsol += "</tr>";
-        // x = ((xl * Funcx(xr)) - (xr * Funcx(xl))) / (Funcx(xr) - Funcx(xl));
-      } while (Math.abs((xm - xo) / xm) * 100 > 0.000001);
+        // x = ((xl * cal(xr)) - (xr * cal(xl))) / (cal(xr) - cal(xl));
+      }while (Math.abs((xm - xo) / xm * 100) > 0.000001);
       trloop += "</tr>";
       trx += "</tr>";
       trError += "</tr>";
-      retsol += trloop + trx + trError + "</table ></div>";
+      retsol +=
+        trloop + trx + trError+"</table ></div>";
       retans += "Answer is  " + xm;
       document.getElementById("showsolt").innerHTML = retsol;
       document.getElementById("showans").innerHTML = retans;
       showchart.render(
         <div>
-          <ApexChart props={[x, Xl, Xr, Xloop]} />
+          <ApexChart props={[data.Xm, data.Xloop]} />
         </div>
       );
       // document.getElementById("chart").innerHTML = "";
-      x = [];
-      Xl = [];
-      Xr = [];
-      Xloop = [];
+      data.Xm = [];
+      data.Xloop = [];
     } else {
       document.getElementById("showans").innerHTML = "";
       document.getElementById("showsolt").innerHTML =
@@ -95,15 +105,8 @@ class Newtonraphson extends Component {
               <fieldset>
                 <Form.Group className="mb-3">
                   <Form.Label htmlFor="disabledTextInput">
-                    False Position Method
+                  Onepoint Iteration
                   </Form.Label>
-                  <Form.Control
-                      id="X"
-                      type="number"
-                      step="1"
-                      placeholder="Input X"
-                      style={formstyle}
-                    />
                   <div
                     style={{
                       display: "flex",
@@ -112,21 +115,23 @@ class Newtonraphson extends Component {
                     }}
                   >
                     <Form.Control
-                    id="Fx"
-                    type="text"
-                    step="1"
-                    placeholder="Input f(x)"
-                    style={formstyle}
-                  />
-                  <Form.Control
-                    id="DFx"
-                    type="text"
-                    step="1"
-                    placeholder="Input f'(x)"
-                    style={formstyle}
-                  />
+                      id="X"
+                      type="number"
+                      defaultValue={data.receivedata.X}
+                      step="1"
+                      placeholder="Input X"
+                      style={formstyle}
+                    />
+                    
                   </div>
-                  
+                  <Form.Control
+                      id="Fx"
+                      type="text"
+                      defaultValue={data.receivedata.Fx}
+                      step="1"
+                      placeholder="Input f(x)"
+                      style={formstyle}
+                    />
                 </Form.Group>
                 <div id="showans" className="ansStyles"></div>
                 <button
@@ -140,17 +145,17 @@ class Newtonraphson extends Component {
             </Form>
           </div>
           <div>
-            <div id="showsolt" class="tablestyle" style={{ marginTop: "5%" }}>
+            <div id="showsolt" style={{ marginTop:"5%"}}>
               <table class="tablestyle"></table>
             </div>
           </div>
         </div>
         <div id="showchart">
-          <ApexChart props={[x, Xl, Xr, Xloop]} />
+          <ApexChart props={[data.Xm, data.Xloop]} />
         </div>
       </div>
     );
   }
 }
 
-export default Newtonraphson;
+export default Onepoint;

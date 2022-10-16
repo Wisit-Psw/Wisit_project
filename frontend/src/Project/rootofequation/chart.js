@@ -10,15 +10,7 @@ class ApexChart extends Component {
           {
             name: "Xm",
             data: props.props[0],
-          },
-          {
-            name: "Xl",
-            data: props.props[1],
-          },
-          {
-            name: "Xr",
-            data: props.props[2],
-          },
+          }
         ],
         options: {
           chart: {
@@ -57,7 +49,7 @@ class ApexChart extends Component {
             },
           },
           xaxis: {
-            categories: props.props[3],
+            categories: props.props[1],
           },
           tooltip: {
             y: [

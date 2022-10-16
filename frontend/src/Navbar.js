@@ -55,7 +55,7 @@ class NavBar extends Component{
             </Dropdown>
             <Dropdown className="Dropdownbtn">
                 <Dropdown.Toggle variant="dark" id="dropdown-basic">
-                    Interporation
+                    Interpolation
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                         <Nav.Link as={Link} to="/Newton_Div">Newton Divided</Nav.Link>
@@ -65,7 +65,7 @@ class NavBar extends Component{
             </Dropdown>
             <Dropdown className="Dropdownbtn">
                 <Dropdown.Toggle variant="dark" id="dropdown-basic">
-                    Extraporation
+                    Extrapolation
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                         

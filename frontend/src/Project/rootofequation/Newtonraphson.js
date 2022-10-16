@@ -4,12 +4,18 @@ import * as ReactDOM from "react-dom";
 import "./rootof.css";
 import ApexChart from "./chart";
 var formstyle = { marginLeft: "auto", marginRight: "auto" };
-var arrx = [];
-var Xl;
-var Xr;
-var Xloop = [];
-/* eslint no-eval: 0 */
-class SecantMethod extends Component {
+var data ={
+  Xm : [],
+  Xloop : [],
+  receivedata :{
+    Fx:'',
+    DFx:''
+  }
+}
+export function Newtonraphson_receivedata(pdata){
+  data.receivedata= pdata;
+}
+class Newtonraphson extends Component {
   constructor() {
     super();
     console.log("constructor");
@@ -17,62 +23,77 @@ class SecantMethod extends Component {
 
   componentDidMount() {
     console.log("componentDidMount");
+    data.receivedata.Fx = '';
+    data.receivedata.DFx = '';
   }
 
   myFunc() {
     var Funcx = (x) => {
-      var fx = eval(document.getElementById("Fx").value);
-      // var fx = 43*x-1;
+      var strval = document.getElementById("Fx").value;
+      var str =''
+      for(var i=0; i<strval.length; i++) {
+        if(strval[i] !== '^'){str+=strval[i];}
+        else{str+='**';}
+      }
+        fx = eval(str);
+      return fx;
+    };
+    var DFuncx = (x) => {
+      var strval = document.getElementById("DFx").value;
+      var str =''
+      for(var i=0; i<strval.length; i++) {
+        if(strval[i] !== '^'){str+=strval[i];}
+        else{str+='**';}
+      }
+        fx = eval(str);
       return fx;
     };
     const showchart = ReactDOM.createRoot(document.getElementById("showchart"));
-    var fx = eval(document.getElementById("Fx").value);
-    var xo = document.getElementById("Xo").value;
-    var xn = document.getElementById("Xn").value;
-    if (xn !== "" && xo !== "" && fx !== "") {
+    var fx = document.getElementById("Fx").value;
+    var xm = document.getElementById("X").value;
+    if (xm !== "" && fx !== "") {
       var retsol = "<div class='scollbar'><table >";
       var trloop = "<tr ><th style='border:1px solid black;'>Loop</th>";
       var trx = "<tr ></tr><th style='border:1px solid black;'>X</th>";
       var trError = "<tr ></tr><th style='border:1px solid black;'>Error</th>";
       var retans = "";
+      var xo;
       var countloop = 0;
       do {
-        var x = xn - (Funcx(xn)*(xo-xn))/(Funcx(xo)-Funcx(xn));
-        xo=xn;xn = x;
-        arrx.push(xn);
-        console.log(arrx);
-        Xloop.push(countloop);
+        xo = xm;
+        data.Xm.push(xm);
+        xm = xm - Funcx(xm) / DFuncx(xm);
+        console.log(xm);
+        data.Xloop.push(countloop);
         // retsol += "<tr style='border:1px solid black;'>";
         trloop +=
           "<td style='border:1px solid black;'>" + ++countloop + "</td>";
         trx +=
           "<td style='border:1px solid black;'>" +
-          Math.floor(xn * 100000) / 100000 +
+          Math.floor(xm * 100000) / 100000 +
           "</td>";
         trError +=
           "<td style='border:1px solid black;'>" +
-          Math.floor((((xn - xo) / xn) * 100) * 1000)/1000 +
+          Math.floor((((xm - xo) / xm) * 100) * 1000)/1000 +
           "%</td>";
         // retsol += "</tr>";
         // x = ((xl * Funcx(xr)) - (xr * Funcx(xl))) / (Funcx(xr) - Funcx(xl));
-      } while (Math.abs((xn - xo) / xn) * 100 > 0.000001);
+      } while (Math.abs((xm - xo) / xm) * 100 > 0.000001);
       trloop += "</tr>";
       trx += "</tr>";
       trError += "</tr>";
       retsol += trloop + trx + trError + "</table ></div>";
-      retans += "Answer is  " + xn;
+      retans += "Answer is  " + xm;
       document.getElementById("showsolt").innerHTML = retsol;
       document.getElementById("showans").innerHTML = retans;
       showchart.render(
         <div>
-          <ApexChart props={[arrx, Xl, Xr, Xloop]} />
+          <ApexChart props={[data.Xm,data.Xloop]} />
         </div>
       );
       // document.getElementById("chart").innerHTML = "";
-      arrx = [];
-      Xl = [];
-      Xr = [];
-      Xloop = [];
+      data.Xm = [];
+      data.Xloop = [];
     } else {
       document.getElementById("showans").innerHTML = "";
       document.getElementById("showsolt").innerHTML =
@@ -91,9 +112,15 @@ class SecantMethod extends Component {
               <fieldset>
                 <Form.Group className="mb-3">
                   <Form.Label htmlFor="disabledTextInput">
-                    False Position Method
+                    Newton Raphson
                   </Form.Label>
-                  
+                  <Form.Control
+                      id="X"
+                      type="number"
+                      step="1"
+                      placeholder="Input X"
+                      style={formstyle}
+                    />
                   <div
                     style={{
                       display: "flex",
@@ -102,27 +129,23 @@ class SecantMethod extends Component {
                     }}
                   >
                     <Form.Control
-                      id="Xo"
-                      type="number"
-                      step="1"
-                      placeholder="Input X0"
-                      style={formstyle}
-                    />
-                    <Form.Control
-                    id="Xn"
-                    type="number"
-                    step="1"
-                    placeholder="Input X1"
-                    style={formstyle}
-                  />
-                  </div>
-                  <Form.Control
                     id="Fx"
                     type="text"
                     step="1"
+                    defaultValue={data.receivedata.Fx}
                     placeholder="Input f(x)"
                     style={formstyle}
                   />
+                  <Form.Control
+                    id="DFx"
+                    type="text"
+                    step="1"
+                    defaultValue={data.receivedata.DFx}
+                    placeholder="Input f'(x)"
+                    style={formstyle}
+                  />
+                  </div>
+                  
                 </Form.Group>
                 <div id="showans" className="ansStyles"></div>
                 <button
@@ -136,17 +159,17 @@ class SecantMethod extends Component {
             </Form>
           </div>
           <div>
-            <div id="showsolt"  style={{ marginTop: "5%" }}>
+            <div id="showsolt" class="tablestyle" style={{ marginTop: "5%" }}>
               <table class="tablestyle"></table>
             </div>
           </div>
         </div>
         <div id="showchart">
-          <ApexChart props={[arrx, Xl, Xr, Xloop]} />
+          <ApexChart props={[data.Xm, data.Xloop]} />
         </div>
       </div>
     );
   }
 }
 
-export default SecantMethod;
+export default Newtonraphson;
