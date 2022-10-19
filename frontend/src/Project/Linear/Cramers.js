@@ -2,9 +2,14 @@ import "antd";
 import "./linear.css";
 import { React, Component } from "react";
 // import "./Gauss.css";/
+var data = {};
 var matrix = [];
 var matrixAns = [];
-
+export function Cramers_receivedata(pdata){
+  data=pdata;
+  matrix = pdata.metrics
+  matrixAns = pdata.metans
+}
 class Cramers extends Component {
   constructor() {
     super();
@@ -13,6 +18,8 @@ class Cramers extends Component {
 
   componentDidMount() {
     console.log("componentDidMount");
+    this.Creatmetrixinput()
+    // this.Creatmetrixinput(document.getElementById("size").value);
   }
 
   myFunc() {
@@ -43,6 +50,7 @@ class Cramers extends Component {
     var val = document.getElementById("size").value;
     var retsol = "";
     var retsolX = "";
+    if(matrix.length===0){
     for (let i = 0; i < val; i++) {
       matrix.push([]);
       matrixAns.push([]);
@@ -53,6 +61,7 @@ class Cramers extends Component {
       var inpuanstVal = document.getElementById("ansinput" + i + "0").value;
       matrixAns[i].push(inpuanstVal);
     }
+  }
     var matX = [];
     var multipy, index;
 
@@ -154,8 +163,8 @@ class Cramers extends Component {
       document.getElementById("showsolv").innerHTML = retsol+retsolX;
     }
   }
-  CreatmetrimatXnput = (val) => {
-    val = val.target.value;
+  Creatmetrixinput = () => {
+    var val = document.getElementById("size").value;
     var ret = "";
 
     for (let i = 0; i < val; i++) {
@@ -164,10 +173,13 @@ class Cramers extends Component {
           '<input type="number" id="input' +
           i +
           j +
-          '"  style="width:30px" ;/> ';
+          '"  style="width:20px" '
+          if(matrix.length!==0){ret += 'value = "' +matrix[i][j]+'"'}
+          ret +=';/> ';
       }
-      ret += '| <input type="number" id="ansinput' + i + "0";
-      ret += '"  style="width:30px;margin-left:5px" />';
+      ret += '| <input type="number" id="ansinput' + i + '0" style="width:20px;margin-left:10px" '
+      if(matrixAns.length!==0){ret += ' value = "' +matrixAns[i][0]+'"'}
+      ret +=' />';
       ret += "<br>";
     }
     document.getElementById("ShowText").innerHTML = ret;
@@ -186,7 +198,8 @@ class Cramers extends Component {
                 type="number"
                 step="1"
                 id="size"
-                onChange={this.CreatmetrimatXnput}
+                defaultValue={data.size}
+                onChange={this.Creatmetrixinput}
                 style={{ width: "30px" }}
               />
             </p>
@@ -215,6 +228,7 @@ class Cramers extends Component {
           </div>
         </div>
       </div>
+      
     );
   }
 }

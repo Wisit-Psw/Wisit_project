@@ -1,8 +1,13 @@
 import { React, Component } from "react";
 import "./Gauss.css";
+var data = {};
 var metrics = [];
 var metans = [];
-
+export function GaussElm_receivedata(pdata) {
+  data = pdata;
+  metrics = pdata.metrics;
+  metans = pdata.metans;
+}
 class GaussElm extends Component {
   constructor() {
     super();
@@ -11,36 +16,46 @@ class GaussElm extends Component {
 
   componentDidMount() {
     console.log("componentDidMount");
+    this.Creatmetrixinput();
   }
 
   myFunc() {
     var val = document.getElementById("size").value;
     var retsol = "";
     var retmet = "";
-    for (let i = 0; i < val; i++) {
-      metrics.push([]);
-      metans.push([]);
-      for (let j = 0; j < val; j++) {
-        var inputVal = document.getElementById("input" + i + j).value;
-        metrics[i].push(inputVal);
+    if (metrics.length === 0) {
+      for (let i = 0; i < val; i++) {
+        metrics.push([]);
+        metans.push([]);
+        for (let j = 0; j < val; j++) {
+          var inputVal = document.getElementById("input" + i + j).value;
+          metrics[i].push(inputVal);
+        }
+        var inpuanstVal = document.getElementById("ansinput" + i + "0").value;
+        metans[i].push(inpuanstVal);
       }
-      var inpuanstVal = document.getElementById("ansinput" + i + "0").value;
-      metans[i].push(inpuanstVal);
     }
-    
     for (let i = 0; i < metrics.length; i++) {
-      retmet += "<table style='width:50%;margin:10px auto;border-left: 2px solid black;border-right: 2px solid black;'>";
+      retmet +=
+        "<table style='width:50%;margin:10px auto;border-left: 2px solid black;border-right: 2px solid black;'>";
       for (let j = 0; j < metrics.length; j++) {
         retmet += "<tr>";
         for (let k = 0; k < metrics[j].length; k++) {
-          retmet += "<td style='text-align:center;'>"+Math.floor(metrics[j][k]*10000)/10000 + "</td>";
+          retmet +=
+            "<td style='text-align:center;'>" +
+            Math.floor(metrics[j][k] * 10000) / 10000 +
+            "</td>";
         }
         // retmet += "| ";
-        retmet +="<td style='text-align:center;border-left: 2px solid black;'>"+ Math.floor(metans[j][0]*10000)/10000 + " </td></tr> ";
+        retmet +=
+          "<td style='text-align:center;border-left: 2px solid black;'>" +
+          Math.floor(metans[j][0] * 10000) / 10000 +
+          " </td></tr> ";
       }
       retmet += "</table >";
       retmet += "---------------------------------------------<br>";
-      retmet += "<table style='width:50%;margin:10px auto;border-left: 2px solid black;border-right: 2px solid black;'>";
+      retmet +=
+        "<table style='width:50%;margin:10px auto;border-left: 2px solid black;border-right: 2px solid black;'>";
       for (let j = i + 1; j < metrics.length; j++) {
         //retmet += '|'
         var multivar = metrics[j][i];
@@ -48,13 +63,14 @@ class GaussElm extends Component {
           retmet += "<tr>";
           for (let k = 0; k < metrics.length; k++) {
             retmet +=
-              "<td style='text-align:center;'>"+Math.floor(metrics[j][k]*10000)/10000 +
+              "<td style='text-align:center;'>" +
+              Math.floor(metrics[j][k] * 10000) / 10000 +
               "-((" +
-              Math.floor(metrics[i][k]*10000)/10000 +
+              Math.floor(metrics[i][k] * 10000) / 10000 +
               "/" +
-              Math.floor(metrics[i][i]*10000)/10000 +
+              Math.floor(metrics[i][i] * 10000) / 10000 +
               ")*" +
-              Math.floor(multivar*10000)/10000 +
+              Math.floor(multivar * 10000) / 10000 +
               ")  ";
             var x = metrics[j][k] - (metrics[i][k] / metrics[i][i]) * multivar;
             metrics[j][k] = x;
@@ -64,13 +80,13 @@ class GaussElm extends Component {
           //retmet += '|'
           retmet +=
             " <td style='text-align:center;; border-left: 2px solid black;'>" +
-            Math.floor(metans[j][0]*10000)/10000 +
+            Math.floor(metans[j][0] * 10000) / 10000 +
             "-((" +
-            Math.floor(metans[i][0]*10000)/10000 +
+            Math.floor(metans[i][0] * 10000) / 10000 +
             "/" +
-            Math.floor(metrics[i][i]*10000)/10000 +
+            Math.floor(metrics[i][i] * 10000) / 10000 +
             ")*" +
-            Math.floor(multivar*10000)/10000 +
+            Math.floor(multivar * 10000) / 10000 +
             ") ";
           var y = metans[j][0] - (metans[i][0] / metrics[i][i]) * multivar;
           metans[j][0] = y;
@@ -99,7 +115,12 @@ class GaussElm extends Component {
     }
     var retx = "<table style='margin:0 auto;'>";
     for (let j = 0; j < metrics.length; j++) {
-      retx += "<tr><td style='text-align:center;'>x" + (j + 1) + " = " + Math.floor(xi[j]*10000)/10000 + "</td></tr>";
+      retx +=
+        "<tr><td style='text-align:center;'>x" +
+        (j + 1) +
+        " = " +
+        Math.floor(xi[j] * 10000) / 10000 +
+        "</td></tr>";
     }
     retx += "</table>";
     metrics = [];
@@ -108,20 +129,27 @@ class GaussElm extends Component {
     document.getElementById("showsolv").innerHTML = retmet;
   }
 
-  Creatmetrixinput = (val) => {
-    val = val.target.value;
+  Creatmetrixinput = () => {
+    var val = document.getElementById("size").value;
     var ret = "";
 
     for (let i = 0; i < val; i++) {
       for (let j = 0; j < val; j++) {
         ret +=
-          '<input type="number" id="input' +
-          i +
-          j +
-          '"  style="width:20px" ;/> ';
+          '<input type="number" id="input' + i + j + '"  style="width:20px" ';
+        if (metrics.length !== 0) {
+          ret += 'value = "' + metrics[i][j] + '"';
+        }
+        ret += ";/> ";
       }
-      ret += '| <input type="number" id="ansinput' + i + "0";
-      ret += '"  style="width:20px;margin-left:10px" />';
+      ret +=
+        '| <input type="number" id="ansinput' +
+        i +
+        '0" style="width:20px;margin-left:10px" ';
+      if (metans.length !== 0) {
+        ret += ' value = "' + metans[i][0] + '"';
+      }
+      ret += " />";
       ret += "<br>";
     }
     document.getElementById("ShowText").innerHTML = ret;
@@ -140,6 +168,7 @@ class GaussElm extends Component {
                 type="number"
                 step="1"
                 id="size"
+                defaultValue={data.size}
                 onChange={this.Creatmetrixinput}
                 style={{ width: "30px" }}
               />

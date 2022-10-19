@@ -8,6 +8,12 @@ import { FalsePosition_receivedata} from "./rootofequation/FalsePosition";
 import { Onepoint_receivedata} from "./rootofequation/Onepoint";
 import { Newtonraphson_receivedata } from "./rootofequation/Newtonraphson";
 import { SecantMethod_receivedata } from "./rootofequation/Secant";
+import { Cramers_receivedata } from "./Linear/Cramers";
+import { GaussElm_receivedata } from "./Linear/GaussElm";
+import {Matrixinvertion_receivedata}from "./Linear/Matrixinvertion";
+import {Jacobi_receivedata}from "./Linear/JacobiIteration"
+import {GaussSeidel_receivedata}from "./Linear/GaussSeidel"
+import {Conjugate_receivedata}from "./Linear/ConjugateGradient";
 
 var chap={
   1001:Bisrection_receivedata,
@@ -15,6 +21,12 @@ var chap={
   1003:Onepoint_receivedata,
   1004:Newtonraphson_receivedata,
   1005:SecantMethod_receivedata,
+  2001:Cramers_receivedata,
+  2002:GaussElm_receivedata,
+  2003:Matrixinvertion_receivedata,
+  2004:Jacobi_receivedata,
+  2005:GaussSeidel_receivedata,
+  2006:Conjugate_receivedata
 };
 class Getapi extends Component {
   state = {
@@ -24,12 +36,48 @@ class Getapi extends Component {
     const result = await axios.get(this.props.url+this.props.chap);
     this.setState({ data: result.data });
   }
+  printmat = (mat) => {
+    var ret =
+      "<table style='border-left: 2px solid black;border-right: 2px solid black;margin:10px auto;'>";
+    for (let i = 0; i < mat.length; i++) {
+      ret += "<tr>";
+      if (mat[0].length > 0) {
+        for (let j = 0; j < mat[0].length; j++) {
+          ret +=
+            "<td style='width:20px;'>" +
+            Math.floor(mat[i][j] * 1000) / 1000 +
+            "</td>";
+        }
+      } else {
+        ret +=
+          "<td style='width:20px;'>" +
+          Math.floor(mat[i] * 1000) / 1000 +
+          "</td>";
+      }
+      ret += "</tr>";
+    }
+    ret += "</table>";
+    return ret;
+  };
+  Linear_str = (row) =>{
+    var ret = "<table><tr>";
+    ret+= "<td>"+this.printmat(row.metrics)+"</td>";
+    ret+= "<td>"+this.printmat(row.metans)+"</td>";
+    ret += "</tr></table>"
+    return ret;
+  }
   textCondition(row) {
-    if(this.props.chap=='1001'){return ["/Bisection",String("^" + row.root + "\\sqrt" + row.number)]}
-    else if(this.props.chap=='1002'){return ["/FalsePosition",String(row.Fx)]}
-    else if(this.props.chap=='1003'){return ["/Onepoint",String(row.Fx)]}
-    else if(this.props.chap=='1004'){return ["/Newtonraphson",String(row.Fx)]}
-    else if(this.props.chap=='1005'){return ["/SecantMethod",String(row.Fx)]}
+    if(this.props.chap==='1001'){return ["/Bisection",<MathComponent tex={String("^" + row.root + "\\sqrt" + row.number)} />]}
+    else if(this.props.chap==='1002'){return ["/FalsePosition",<MathComponent tex={String(row.Fx)} />]}
+    else if(this.props.chap==='1003'){return ["/Onepoint",<MathComponent tex={String(row.Fx)} />]}
+    else if(this.props.chap==='1004'){return ["/Newtonraphson",<MathComponent tex={String(row.Fx)} />]}
+    else if(this.props.chap==='1005'){return ["/SecantMethod",<MathComponent tex={String(row.Fx)} />]}
+    else if(this.props.chap==='2001'){return ["/CramersRules",<div dangerouslySetInnerHTML={{ __html:this.Linear_str(row)}} style={{margin:'auto'}}></div>]}
+    else if(this.props.chap==='2002'){return ["/GaussElm",<div dangerouslySetInnerHTML={{ __html:this.Linear_str(row)}} style={{margin:'auto'}}></div>]}
+    else if(this.props.chap==='2003'){return ["/Matrixinvertion",<div dangerouslySetInnerHTML={{ __html:this.Linear_str(row)}} style={{margin:'auto'}}></div>]}
+    else if(this.props.chap==='2004'){return ["/Jacobi",<div dangerouslySetInnerHTML={{ __html:this.Linear_str(row)}} style={{margin:'auto'}}></div>]}
+    else if(this.props.chap==='2005'){return ["/GaussSeidel",<div dangerouslySetInnerHTML={{ __html:this.Linear_str(row)}} style={{margin:'auto'}}></div>]}
+    else if(this.props.chap==='2006'){return ["/Conjugate",<div dangerouslySetInnerHTML={{ __html:this.Linear_str(row)}} style={{margin:'auto'}}></div>]}
     else {return ['','']}
   }
   render() {
@@ -37,14 +85,13 @@ class Getapi extends Component {
     return(
       <div>
       {this.state.data.map((row) => (
-        console.log(this.textCondition(row)),
       <Link
         to={this.textCondition(row)[0]}
         onClick={() =>
           chap[this.props.chap](row)
         }
       >
-        <MathComponent tex={this.textCondition(row)[1]} />
+       {this.textCondition(row)[1] }
       </Link>
     ))}
     </div>)

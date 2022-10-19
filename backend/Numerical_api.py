@@ -24,12 +24,14 @@ async def getUnit()-> dict:
     cur = cnx.cursor()
     cur.execute("SELECT * FROM unit")
     select = cur.fetchall()
+    # cnx.close()
     return  select
 @app.get("/getChapter")
 async def getChapter()-> dict:
     cur = cnx.cursor()
     cur.execute("SELECT * FROM chapter")
     select = cur.fetchall()
+    # cnx.close()
     return  select
 @app.get("/getQuations/{chapter_id}")
 async def getQuations(chapter_id:str)-> dict:

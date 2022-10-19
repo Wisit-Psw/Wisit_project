@@ -1,0 +1,14 @@
+{
+  "name": "wisit_project",
+  "version": "1.0.0",
+  "private": true,
+  "man": ["/backend",
+          "/frontend"],
+  "dependencies": {},
+  "scripts": {
+    "start": "webpack && node server/server.js",
+    "fastapi":"cd backend && python -m  uvicorn Numerical_api:app --reload ",
+    "reactapp":"cd frontend && npm start ",
+    "all":"npm run fastapi && npm run reactapp"
+  }
+}

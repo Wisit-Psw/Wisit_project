@@ -9,6 +9,8 @@ import Onepoint from "./Project/rootofequation/Onepoint";
 import SecantMethod from "./Project/rootofequation/Secant";
 import Home from "./Project/Home";
 import Newtonraphson from "./Project/rootofequation/Newtonraphson";
+import GaussSeidel from "./Project/Linear/GaussSeidel";
+import ConjugateGradient from "./Project/Linear/ConjugateGradient";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./Navbar";
 import Footer from "./Footer";
@@ -36,6 +38,8 @@ class App extends Component {
             <Route path="/GaussElm" element={<GaussElm />} />
             <Route path="/Matrixinvertion" element={<Matrixinvertion />} />
             <Route path="/Jacobi" element={<Jacobi />} />
+            <Route path="/GaussSeidel" element={<GaussSeidel />} />
+            <Route path="/Conjugate" element={<ConjugateGradient />} />
             
           </Routes>
           </div>

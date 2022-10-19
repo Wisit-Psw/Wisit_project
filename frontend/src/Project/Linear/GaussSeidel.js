@@ -6,12 +6,12 @@ var matrixAns = [];
 var metx = [];
 var metxold = [];
 var data = {};
-export function Jacobi_receivedata(pdata) {
+export function GaussSeidel_receivedata(pdata) {
   data = pdata;
   matrix = pdata.metrics;
   matrixAns = pdata.metans;
 }
-class Jacobi extends Component {
+class GaussSeidel extends Component {
   constructor() {
     super();
     console.log("constructor");
@@ -47,14 +47,15 @@ class Jacobi extends Component {
     console.log(matrixAns);
     console.log(metx);
     console.log(metxold);
-    var count;
-
+    
     var c = 1;
+    var dividevar;
+    var count;
     do {
-      console.log("loop");
+        count = 0;
       retsol += '<table style="margin:0 auto;">';
       for (let i = 0; i < matrix.length; i++) {
-        var dividevar = matrix[i][i];
+        dividevar = matrix[i][i];
         metx[i] = matrixAns[i];
         retsol +=
           "<tr><td>X " +
@@ -64,38 +65,28 @@ class Jacobi extends Component {
           Math.floor(metx[i] * 1000) / 1000;
         for (let j = 0; j < matrix[i].length; j++) {
           if (i !== j) {
-            retsol +=
-              " - (" +
+            retsol += " - (" +
               Math.floor(matrix[i][j] * 1000) / 1000 +
               "*" +
-              Math.floor(metxold[j] * 1000) / 1000 +
+              Math.floor(metx[j] * 1000) / 1000 +
               ")";
-              metx[i] -= matrix[i][j] * metxold[j];
+            metx[i] -= matrix[i][j] * metx[j];
           }
         }
-        retsol += "/" + dividevar + "</td></tr>";
+        retsol += "/" + dividevar + "</td><td> = "+Math.floor(metx[i]*1000)/1000+"</td></tr>";
         metx[i] /= dividevar;
+        if(Math.abs((metx[i]-metxold[i])/metx[i])*100<=0.001){count++;}
+        metxold[i] = metx[i];
       }
       retsol += "</table><br>";
       c++;
-      count = 0;
-      console.log(metx.length);
-      for (var i = 0; i < metx.length; i++) {
-        if (Math.abs((metx[i] - metxold[i]) / metx[i]) * 100 <= 0.001) {
-          count++;
-          console.log(count);
-        }
-        metxold[i] = metx[i];
-        console.log(metxold[i]);
-        console.log(metx[i]);
-      }
     } while (count !== metx.length);
-    var retx = "";
+    var retx='';
     for (let i = 0; i < matrix.length; i++) {
-      retx += "x" + (i + 1) + " = " + metx[i] + "<br>";
+      retx+="x" + (i + 1) + " = " + Math.floor(metx[i]*1000)/1000+"<br>";
       console.log("x" + (i + 1) + " = " + metx[i]);
     }
-
+    
     document.getElementById("showsolv").innerHTML = retsol;
     document.getElementById("showans").innerHTML = retx;
     matrix = [];
@@ -135,7 +126,7 @@ class Jacobi extends Component {
       <div className="boxStyles_li">
         <div style={{ display: "flex", marginTop: "20px", height: "90%" }}>
           <div className="InputStyles_li">
-            <h3> Jacobi Iteration Method </h3>
+            <h3> Gauss Seidel Method </h3>
             <p>
               Input matrics size{" "}
               <input
@@ -150,7 +141,7 @@ class Jacobi extends Component {
             <form id="myForm">
               <div style={{ height: "45vh" }}>
                 <div id={"ShowText"}></div> <br />
-                <div id="showans" style={{ margin: "0 auto" }}></div>
+                <div id="showans" style={{margin:"0 auto"}}></div>
               </div>
               <button
                 type="button"
@@ -162,11 +153,7 @@ class Jacobi extends Component {
             </form>
           </div>
           <div id="showlist" class="scroll">
-            <div id="showsolv">
-              <div>
-                <h3>Solution</h3>
-              </div>
-            </div>
+            <div id="showsolv" ></div>
           </div>
         </div>
       </div>
@@ -174,4 +161,4 @@ class Jacobi extends Component {
   }
 }
 
-export default Jacobi;
+export default GaussSeidel;

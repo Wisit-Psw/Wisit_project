@@ -4,12 +4,18 @@ import "./Gauss.css";
 var matrix = [];
 var matrixAns = [];
 var Invertmat = [];
+var data = {};
 
 const divstyleinvert = {
   display: "flex",
   marginLeft: "auto",
   marginRight: "auto",
 };
+export function Matrixinvertion_receivedata(pdata) {
+  data = pdata;
+  matrix = pdata.metrics;
+  matrixAns = pdata.metans;
+}
 class Matrixinvertion extends Component {
   constructor() {
     super();
@@ -18,6 +24,7 @@ class Matrixinvertion extends Component {
 
   componentDidMount() {
     console.log("componentDidMount");
+    this.Creatmetrixinput();
   }
 
   myFunc() {
@@ -26,21 +33,35 @@ class Matrixinvertion extends Component {
     var retmet = "<p>Do Gauss Jordan to fine A Invert</p>";
     var retx = "";
     //   var matX = [];
-    for (let i = 0; i < val; i++) {
-      matrix.push([]);
-      matrixAns.push([]);
-      Invertmat.push([]);
-      for (let j = 0; j < val; j++) {
-        var inputVal = document.getElementById("input" + i + j).value;
-        matrix[i].push(inputVal);
-        if (i === j) {
-          Invertmat[i].push(1);
-        } else {
-          Invertmat[i].push(0);
+    if (matrix.length === 0) {
+      for (let i = 0; i < val; i++) {
+        matrix.push([]);
+        matrixAns.push([]);
+        Invertmat.push([]);
+        for (let j = 0; j < val; j++) {
+          var inputVal = document.getElementById("input" + i + j).value;
+          matrix[i].push(inputVal);
+          if (i === j) {
+            Invertmat[i].push(1);
+          } else {
+            Invertmat[i].push(0);
+          }
+        }
+        var inpuanstVal = document.getElementById("ansinput" + i + "0").value;
+        matrixAns[i].push(inpuanstVal);
+      }
+    } else {
+      for (let i = 0; i < val; i++) {
+        Invertmat.push([]);
+        for (let j = 0; j < val; j++) {
+          inputVal = document.getElementById("input" + i + j).value;
+          if (i === j) {
+            Invertmat[i].push(1);
+          } else {
+            Invertmat[i].push(0);
+          }
         }
       }
-      var inpuanstVal = document.getElementById("ansinput" + i + "0").value;
-      matrixAns[i].push(inpuanstVal);
     }
     const printmat = (mat) => {
       var ret =
@@ -105,19 +126,18 @@ class Matrixinvertion extends Component {
       }
     };
     const printX = (mat) => {
-      var res =
-        "<table style='width:400px;margin-left:auto;margin-right:auto;'><tr>";
+      var res = "<table style='margin-left:auto;margin-right:auto;'>";
       for (let i = 0; i < mat.length; i++) {
         for (let j = 0; j < mat[i].length; j++) {
           res +=
-            "<td><p>X" +
+            "<tr><td>X" +
             (i + 1) +
             " = " +
             Math.floor(mat[i][j] * 1000) / 1000 +
-            "</p></td>";
+            "</td></tr>";
         }
       }
-      res += "</tr></table>";
+      res += "</table>";
       return res;
     };
     printsolt();
@@ -244,20 +264,27 @@ class Matrixinvertion extends Component {
     matrixAns = [];
     Invertmat = [];
   }
-  CreatmetrimatXnput = (val) => {
-    val = val.target.value;
+  Creatmetrixinput = () => {
+    var val = document.getElementById("size").value;
     var ret = "";
 
     for (let i = 0; i < val; i++) {
       for (let j = 0; j < val; j++) {
         ret +=
-          '<input type="number" id="input' +
-          i +
-          j +
-          '"  style="width:30px" ;/> ';
+          '<input type="number" id="input' + i + j + '"  style="width:20px" ';
+        if (matrix.length !== 0) {
+          ret += 'value = "' + matrix[i][j] + '"';
+        }
+        ret += ";/> ";
       }
-      ret += '| <input type="number" id="ansinput' + i + "0";
-      ret += '"  style="width:30px;margin-left:5px" />';
+      ret +=
+        '| <input type="number" id="ansinput' +
+        i +
+        '0" style="width:20px;margin-left:10px" ';
+      if (matrixAns.length !== 0) {
+        ret += ' value = "' + matrixAns[i][0] + '"';
+      }
+      ret += " />";
       ret += "<br>";
     }
     document.getElementById("ShowText").innerHTML = ret;
@@ -276,7 +303,8 @@ class Matrixinvertion extends Component {
                 type="number"
                 step="1"
                 id="size"
-                onChange={this.CreatmetrimatXnput}
+                defaultValue={data.size}
+                onChange={this.Creatmetrixinput}
                 style={{ width: "30px" }}
               />
             </p>
