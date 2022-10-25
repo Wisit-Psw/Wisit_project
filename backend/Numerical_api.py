@@ -19,6 +19,9 @@ app.add_middleware(
 )
 
 cnx = mysql.connector.connect(user='root', password='Wisit.comsci2003', host='localhost', database='numerical_project',raise_on_warnings = True)
+@app.get("/")
+async def getUnit()-> dict:
+    return  "Hellow world"
 @app.get("/getUnit")
 async def getUnit()-> dict:
     cur = cnx.cursor()

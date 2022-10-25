@@ -99,6 +99,54 @@ class Home extends Component {
             </tr>
           </table>
         </div>
+        <div>
+          <h3 style={{margin:"20px auto"}}>Interpolation</h3>
+          <table style={{margin:"50px auto"}}>
+            <tr>
+              <td style={{padding:"0 20px"}}>
+                <h5>Newton Divided</h5>
+              </td >
+              <td style={{padding:"0 20px"}}>
+                <h5>Lagrange Interpolation</h5>
+              </td >
+            </tr>
+            <tr>
+              <td style={{padding:"0 20px"}}>
+                <Getapi url="http://localhost:8000/getQuations/" chap="3001" />
+              </td >
+              <td style={{padding:"0 20px"}}>
+                <Getapi url="http://localhost:8000/getQuations/" chap="3002" />
+              </td >
+            </tr>
+          </table>
+        </div>
+        <div>
+          <h3 style={{margin:"20px auto"}}>Least Squares</h3>
+          <table style={{margin:"50px auto"}}>
+            <tr>
+              <td style={{padding:"0 20px"}}>
+                <h5>Linear Regression</h5>
+              </td >
+              <td style={{padding:"0 20px"}}>
+                <h5>Polynomial Regression</h5>
+              </td >
+              <td style={{padding:"0 20px"}}>
+                <h5>Multiple Linear Regression</h5>
+              </td >
+            </tr>
+            <tr>
+              <td style={{padding:"0 20px"}}>
+                <Getapi url="http://localhost:8000/getQuations/" chap="4001" />
+              </td >
+              <td style={{padding:"0 20px"}}>
+                <Getapi url="http://localhost:8000/getQuations/" chap="4002" />
+              </td >
+              <td style={{padding:"0 20px"}}>
+                <Getapi url="http://localhost:8000/getQuations/" chap="4003" />
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
     );
   }

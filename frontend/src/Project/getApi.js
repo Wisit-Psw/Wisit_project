@@ -14,6 +14,11 @@ import {Matrixinvertion_receivedata}from "./Linear/Matrixinvertion";
 import {Jacobi_receivedata}from "./Linear/JacobiIteration"
 import {GaussSeidel_receivedata}from "./Linear/GaussSeidel"
 import {Conjugate_receivedata}from "./Linear/ConjugateGradient";
+import { NewtonDivided_receivedata } from "./Interpolation/newton_divide";
+import { Lagrange_receivedata } from "./Interpolation/Lagrange";
+import { LinearReg_receivedata } from "./Regression/Linear_reg";
+import { PolynomialReg_receivedata } from "./Regression/Polynomial_reg";
+import { MultiLinearReg_receivedata } from "./Regression/MultiLinear_reg";
 
 var chap={
   1001:Bisrection_receivedata,
@@ -26,7 +31,12 @@ var chap={
   2003:Matrixinvertion_receivedata,
   2004:Jacobi_receivedata,
   2005:GaussSeidel_receivedata,
-  2006:Conjugate_receivedata
+  2006:Conjugate_receivedata,
+  3001:NewtonDivided_receivedata,
+  3002:Lagrange_receivedata,
+  4001:LinearReg_receivedata,
+  4002:PolynomialReg_receivedata,
+  4003:MultiLinearReg_receivedata,
 };
 class Getapi extends Component {
   state = {
@@ -59,11 +69,47 @@ class Getapi extends Component {
     ret += "</table>";
     return ret;
   };
+  printmat2 = (mat) => {
+    var ret =
+      "<table style='border-left: 2px solid black;border-right: 2px solid black;margin:0 auto;'>";
+    for (let i = 0; i < mat.length; i++) {
+      ret += "<tr>";
+      if (mat[0].length > 0) {
+        for (let j = 0; j < mat[0].length; j++) {
+          ret +=
+            "<td style='width:20px;'>" +
+            Math.floor(mat[i][j] * 1000) / 1000 +
+            "</td>";
+        }
+      } else {
+        ret +=
+          "<td style='width:20px;'>" +
+          Math.floor(mat[i] * 1000) / 1000 +
+          "</td>";
+      }
+      ret += "</tr>";
+    }
+    ret += "</table>";
+    return ret;
+  };
   Linear_str = (row) =>{
     var ret = "<table><tr>";
     ret+= "<td>"+this.printmat(row.metrics)+"</td>";
     ret+= "<td>"+this.printmat(row.metans)+"</td>";
     ret += "</tr></table>"
+    return ret;
+  }
+  Linear_str2 = (row) =>{
+    var ret = "<table><tr>";
+    ret+= "<td>"+this.printmat(row.metrics)+"</td>";
+    ret += "</tr></table>"
+    return ret;
+  }
+  Linear_str3 = (row) =>{
+    var ret = "<table>";
+    ret+= "<tr ><td> <div style='display:flex;'> X : "+this.printmat2(row.metrics)+"</div></td></tr>";
+    ret+= "<tr ><td> <div style='display:flex;'> Y : "+this.printmat2(row.metans)+"</div></td></tr>";
+    ret += "</table>"
     return ret;
   }
   textCondition(row) {
@@ -78,6 +124,11 @@ class Getapi extends Component {
     else if(this.props.chap==='2004'){return ["/Jacobi",<div dangerouslySetInnerHTML={{ __html:this.Linear_str(row)}} style={{margin:'auto'}}></div>]}
     else if(this.props.chap==='2005'){return ["/GaussSeidel",<div dangerouslySetInnerHTML={{ __html:this.Linear_str(row)}} style={{margin:'auto'}}></div>]}
     else if(this.props.chap==='2006'){return ["/Conjugate",<div dangerouslySetInnerHTML={{ __html:this.Linear_str(row)}} style={{margin:'auto'}}></div>]}
+    else if(this.props.chap==='3001'){return ["/Newton_Div",<div dangerouslySetInnerHTML={{ __html:this.Linear_str2(row)}} style={{margin:'auto'}}></div>]}
+    else if(this.props.chap==='3002'){return ["/Lagrange",<div dangerouslySetInnerHTML={{ __html:this.Linear_str2(row)}} style={{margin:'auto'}}></div>]}
+    else if(this.props.chap==='4001'){return ["/Linear_Reg",<div dangerouslySetInnerHTML={{ __html:this.Linear_str3(row)}} style={{margin:'auto'}}></div>]}
+    else if(this.props.chap==='4002'){return ["/Polynomial_Reg",<div dangerouslySetInnerHTML={{ __html:this.Linear_str3(row)}} style={{margin:'auto'}}></div>]}
+    else if(this.props.chap==='4003'){return ["/MultiLinear_Reg",<div dangerouslySetInnerHTML={{ __html:this.Linear_str3(row)}} style={{margin:'auto'}}></div>]}
     else {return ['','']}
   }
   render() {

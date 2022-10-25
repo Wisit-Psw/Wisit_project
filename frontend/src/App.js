@@ -11,6 +11,11 @@ import Home from "./Project/Home";
 import Newtonraphson from "./Project/rootofequation/Newtonraphson";
 import GaussSeidel from "./Project/Linear/GaussSeidel";
 import ConjugateGradient from "./Project/Linear/ConjugateGradient";
+import NewtonDivided from "./Project/Interpolation/newton_divide";
+import Lagrange from "./Project/Interpolation/Lagrange";
+import LinearReg from "./Project/Regression/Linear_reg";
+import PolynomialReg from "./Project/Regression/Polynomial_reg";
+import MultiLinearReg from "./Project/Regression/MultiLinear_reg";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./Navbar";
 import Footer from "./Footer";
@@ -40,6 +45,11 @@ class App extends Component {
             <Route path="/Jacobi" element={<Jacobi />} />
             <Route path="/GaussSeidel" element={<GaussSeidel />} />
             <Route path="/Conjugate" element={<ConjugateGradient />} />
+            <Route path="/Newton_Div" element={<NewtonDivided />} />
+            <Route path="/Lagrange" element={<Lagrange />} />
+            <Route path="/Linear_Reg" element={<LinearReg />} />
+            <Route path="/Polynomial_Reg" element={<PolynomialReg />} />
+            <Route path="/MultiLinear_Reg" element={<MultiLinearReg />} />
             
           </Routes>
           </div>
