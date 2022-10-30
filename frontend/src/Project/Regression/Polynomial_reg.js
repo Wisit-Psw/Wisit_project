@@ -23,7 +23,7 @@ class PolynomialReg extends Component {
     var val = document.getElementById("size").value;
     var M = document.getElementById("order").value;
     var num = document.getElementById("number").value;
-    // var retsol = "";
+    var retsol = "";
     // var retmet = "";
     if (X.length === 0) {
       for (let i = 0; i < 1; i++) {
@@ -46,6 +46,30 @@ class PolynomialReg extends Component {
         }
         return exposum;
     }
+    const printmat = (mat) => {
+      var ret =
+        "<table style='border-left: 2px solid black;border-right: 2px solid black;'>";
+      for (let i = 0; i < mat.length; i++) {
+        ret += "<tr>";
+        if (mat[0].length > 0) {
+          for (let j = 0; j < mat[0].length; j++) {
+            ret +=
+              "<td style='width:80px;'>" +
+              Math.floor(mat[i][j] * 1000) / 1000 +
+              "</td>";
+          }
+        } else {
+          ret +=
+            "<td style='width:80px;'>" +
+            Math.floor(mat[i] * 1000) / 1000 +
+            "</td>";
+        }
+  
+        ret += "</tr>";
+      }
+      ret += "</table>";
+      return ret;
+    };
     for (var i = 2; i <= M; i++) {
         X.push(expo(X[0],i));
     }
@@ -94,6 +118,9 @@ class PolynomialReg extends Component {
         B[i][0] = summultipy(X[i - 1], Y[0]);
       }
     }
+    retsol+="<div style='display:flex;justify-content: space-around;'><div style='display:flex;justify-content: center;'>A = " + printmat(A)+"</div>"
+    retsol+="<div style='display:flex;justify-content: center;'>B = " + printmat(B)+"</div></div><br>"
+    retsol+="<p>do Gauss eliminate</p>"
     for (let i = 0; i < A.length; i++) {
       for (let j = i + 1; j < A.length; j++) {
        var  multivar = A[j][i];
@@ -107,6 +134,8 @@ class PolynomialReg extends Component {
         }
       }
     }
+    retsol+="<div style='display:flex;justify-content: space-around;'><div style='display:flex;'>" + printmat(A)
+    retsol+=printmat(B)+"</div></div><br>"
     var a = [];
     for (let j = 0; j < A.length; j++) {
       a.push(null);
@@ -123,17 +152,28 @@ class PolynomialReg extends Component {
       a[i] = ans;
     }
     for (let j = 0; j < A.length; j++) {
-      console.log("a" + String(j) + " = " + String(a[j]));
+      retsol+="a" + j + " = " + a[j]+"<br>";
     }
     ans = 0;
+    retsol+="f("+num+") = "
     for (let j = 0; j < a.length; j++) {
-        ans += a[j] * (num**j);
+      if (j === 0) {
+        ans += a[j];
+        retsol+=a[j]
+      } else {
+        ans += a[j] * num**j;
+        retsol+=a[j]+"*"+num+"<sup>"+j+"</sup>";
+      }
+      if(j!==a.length-1){
+        retsol+="+"
+      }
     }
+    retsol+="<br>"
     console.log(X) ;
     console.log(Y) ;
 
     document.getElementById("showans").innerHTML = "Ans = "+ans;
-    // document.getElementById("showsolv").innerHTML = retmet;
+    document.getElementById("showsolv").innerHTML = retsol;
     X = [];
     Y = [];
   }

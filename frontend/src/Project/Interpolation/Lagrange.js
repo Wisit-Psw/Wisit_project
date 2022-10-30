@@ -25,29 +25,40 @@ class Lagrange extends Component {
                 fx[j].push( document.getElementById("fy"+j+"0").value)
             }
       }
-    // var retsol = "";
-    // var retmet = "";
+    var retsolL = "";
+    var retsolLans = "<br>";
+    var retsol = "f("+num+") = ";
     var L = (x, j) => {
+      var retsoltop = 'L'+j+" = ";
+      retsolLans+='L'+j+" = ";
+      var retsoldivide = '';
         var top = 1,
           divide = 1;
         for (var l in fx) {
           if (l !== j) {
             top *= fx[l][0] - x;
+            retsoltop+="("+fx[l][0] +"-"+ x+")";
             divide *= fx[l][0] - fx[j][0];
+            retsoldivide+="("+fx[l][0] +"-"+ fx[j][0]+")"
           }
         }
+        retsolL+=retsoltop+" / "+retsoldivide+"<br>";
+        retsolLans+=top / divide+"<br>";
         return top / divide;
       };
       var Fx = (x) => {
         var ans = 0;
-        for (let i in fx) {
-          ans += fx[i][1] * L(x, i);
+        for (var i in fx) {
+          var Li = L(x, i);
+          ans += fx[i][1] * Li;
+          retsol+= "("+Li + "*" +fx[i][1]+")";
+          if(Number(i) !== Number(fx.length-1)){retsol+="+"}
         }
         return ans;
       };
     
     document.getElementById("showans").innerHTML = "Ans = "+Fx(num,fx);
-    // document.getElementById("showsolv").innerHTML = retmet;
+    document.getElementById("showsolv").innerHTML = retsolL+retsolLans+retsol;
     fx = [];
   }
 

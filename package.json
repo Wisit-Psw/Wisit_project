@@ -2,13 +2,19 @@
   "name": "wisit_project",
   "version": "1.0.0",
   "private": true,
-  "man": ["/backend",
-          "/frontend"],
-  "dependencies": {},
+  "man": [
+    "/backend",
+    "/frontend"
+  ],
+  "dependencies": {
+    "mathjs": "^11.3.2",
+    "react-image": "^4.0.3",
+    "react-webcam": "^7.0.1"
+  },
   "scripts": {
     "start": "webpack && node server/server.js",
-    "fastapi":"cd backend && python -m  uvicorn Numerical_api:app --reload ",
-    "reactapp":"cd frontend && npm start ",
-    "all":"npm run fastapi && npm run reactapp"
+    "fastapi": "cd backend && python -m  uvicorn Numerical_api:app --reload ",
+    "reactapp": "cd frontend && npm start ",
+    "all": "npm run fastapi && npm run reactapp"
   }
 }

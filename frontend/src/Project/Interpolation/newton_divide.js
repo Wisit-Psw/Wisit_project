@@ -26,6 +26,8 @@ class NewtonDivided extends Component {
             }
       }
     // var retsol = "";
+    var retc = "";
+    var retfx = "f("+num+") = ";
     // var retmet = "";
     var C = (x2,x1,fx) =>{
         if(x2===0&&x1===0){return Number(fx[x1][1]);}
@@ -38,15 +40,21 @@ class NewtonDivided extends Component {
         var Ans=0;
         for(var i=0;i<fx.length;i++){ 
             var c = C(i,0,fx);
+            retc+="C"+i+" = "+Math.floor(c*10000)/10000+"<br>";
+            retfx+="("+Math.floor(c*10000)/10000;
             for(let j=0; j<i ; j++){
+                retfx+="*("+Math.floor(x*10000)/10000+"-"+Math.floor(fx[j][0]*10000)/10000+")"
                 c*=(x-fx[j][0]);
+                
             }
+            retfx+=")"
+            if(i !== fx.length-1){retfx+="+"}
             Ans+=c;
         } return Ans;
     };
     
     document.getElementById("showans").innerHTML = "Ans = "+Fx(num,fx);
-    // document.getElementById("showsolv").innerHTML = retmet;
+    document.getElementById("showsolv").innerHTML = retc+retfx;
     fx = [];
   }
 
