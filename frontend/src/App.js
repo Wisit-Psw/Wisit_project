@@ -20,6 +20,7 @@ import Objectdetection from "./Project/Objectdetection";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./Navbar";
 import Footer from "./Footer";
+import Test from "./test";
 
 import "./App.css";
 
@@ -52,6 +53,7 @@ class App extends Component {
               <Route path="/Polynomial_Reg" element={<PolynomialReg />} />
               <Route path="/MultiLinear_Reg" element={<MultiLinearReg />} />
               <Route path="/Objectdetection" element={<Objectdetection />} />
+              <Route path="/test" element={<Test />} />
             </Routes>
           </div>
           <Footer />

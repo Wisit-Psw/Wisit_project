@@ -1,5 +1,2 @@
-0 person_non_mask
-1 pen
-2 phone
-3 mask
-4 person_mask
+0 non-mask
+1 Mask
